@@ -1,3 +1,4 @@
+import classes from "@/components/l_circuit.module.css";
 
 function ZinLessThanZload ({L1, C1, Z1, C2, L2}) {
     return (

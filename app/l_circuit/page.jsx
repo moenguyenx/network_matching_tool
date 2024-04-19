@@ -1,6 +1,8 @@
 "use client"
 import { useState, useEffect } from "react";
 import { ZinLessThanZload, ZinMoreThanZload } from "@/components/l_circuit";
+import Links from "@/components/links";
+import classes from "./page.module.css";
 
 
 export default function LCircuit() {
@@ -8,75 +10,139 @@ export default function LCircuit() {
     const [freq, setFreq] = useState(0);
     const [Zload, setZload] = useState(0);
     const [invalidInput, setInvalidInput] = useState(false);
+    const [L1, setL1] = useState(0);
+    const [C1, setC1] = useState(0);
+    const [L2, setL2] = useState(0);
+    const [C2, setC2] = useState(0);
+    const [Z1, setZ1] = useState(0);
 
     useEffect(() => {
-        console.log(Zin);
-        console.log(freq);
-        console.log(Zload);
         if (Zin < Zload) {
             setInvalidInput(true);
         } else {
             setInvalidInput(false);
         }
+    }, [Zin, Zload]);
+
+    useEffect(() => {
+        if (Zin < Zload) {
+            // Calculate omega
+            setZ1(Zload)
+            var omega = 2 * Math.PI * freq * Math.pow(10, 6);
+            
+            // Calculate Qp
+            var Qp = Math.sqrt((Zload - Zin) / Zin);
+            
+            // Calculate C1
+            var calculatedC1 = Math.round((Qp / (Zload * omega)) * 1e12 * 100) / 100;
+            setC1(calculatedC1);
+            
+            // Calculate Cs
+            var Cs = ((Math.pow(Qp, 2) + 1) / Math.pow(Qp, 2)) * calculatedC1 * Math.pow(10, -12);
+            
+            // Calculate L1
+            var calculatedL1 = Math.round((1 / (Cs * Math.pow(omega, 2))) * 1e9 * 100)/100;
+            setL1(calculatedL1);
+
+            // Calculate L2
+            var calculatedL2 = Math.round((Zload/(Qp*omega))*1e9*100)/100;
+            setL2(calculatedL2);
+
+            // Calculate Ls
+            var Ls = (Math.pow(Qp, 2) / (Math.pow(Qp, 2)+1)) * calculatedL2 * Math.pow(10, -9);
+
+            // Calculate C2
+            var calculatedC2 = Math.round((1/(Ls*Math.pow(omega, 2)))*1e12*100)/100;
+            setC2(calculatedC2);
+            
+        } else {
+            var omega = 2 * Math.PI * freq * Math.pow(10, 6);
+            var Qs = Math.sqrt((Zin - Zload)/Zload);
+
+            //Cal L1
+            var calL1 = Math.round(((Qs*Zload)/omega)*1e9*100)/100;
+            setL1(calL1);
+
+            // Cal Lp
+            var Lp = ((Math.pow(Qs, 2) + 1)/Math.pow(Qs, 2))*calL1*Math.pow(10, -9);
+
+            // Cal C1
+            var calC1 = Math.round((1/(Lp*Math.pow(omega, 2)))*1e12*100)/100;
+            setC1(calC1);
+
+            // Cal C2
+            var calC2 = Math.round((1/(Qs*Zload*omega))*1e12*100)/100;
+            setC2(calC2);
+
+            // Cal Cp
+            var Cp = ((Math.pow(Qs, 2))/(Math.pow(Qs, 2)+1))*calC2*Math.pow(10, -12);
+
+            // Cal L2
+            var calL2 = Math.round((1/(Cp*Math.pow(omega, 2)))*1e9*100)/100;
+            setL2(calL2);
+        }
+
+
     }, [Zin, Zload, freq])
     
     return (
         <>
-        <div style={{marginLeft: "2rem"}}>
+        <div style={{marginLeft: "4rem"}}>
             <h1>L-Circuit Network Matching</h1>
-
-            <div class="user-input-area">
+            <Links/>
+            <div className={classes['user-input-area']}>
                 <h3>Parameters</h3>
                 <div class="">
-                  <label class="row-heading" for="Impedance">Z-in:</label>
-                  <input class="row-data" id="Impedance" value={Zin} onChange={(e) => setZin(e.target.value)}/>
-                  <span class="row-units"> Ω </span>
-                  <span class="row-range">(0 &lt; Z<sub>o</sub> &lt;= 1000)</span>
+                  <label className={classes['row-heading']} for="Impedance">Z-in:</label>
+                  <input className={classes['row-data']} id="Impedance" value={Zin} onChange={(e) => setZin(e.target.value)}/>
+                  <span className={classes['row-units']}> Ω </span>
+                  <span className={classes['row-range']}>(0 &lt; Z<sub>o</sub> &lt;= 1000)</span>
                 </div>
                 <div class="">
-                  <label class="row-heading" for="Frequency">Frequency:</label>
-                  <input class="row-data" id="Frequency" value={freq} onChange={(e) => setFreq(e.target.value)}/>
-                  <span class="row-units"> MHz </span>
-                  <span class="row-range">(0 &lt; F<sub>o</sub> &lt;= 20000)</span>
+                  <label className={classes['row-heading']} for="Frequency">Frequency:</label>
+                  <input className={classes['row-data']} id="Frequency" value={freq} onChange={(e) => setFreq(e.target.value)}/>
+                  <span className={classes['row-units']}> MHz </span>
+                  <span className={classes['row-range']}>(0 &lt; F<sub>o</sub> &lt;= 20000)</span>
                 </div>
                 <div class="">
-                  <label class="row-heading" for="ZLoad">Z-load:</label>
-                  <input class="row-data" id="ZLoad" value={Zload} onChange={(e) => setZload(e.target.value)}/>
-                  <span class="row-units">  </span>
-                  <span class="row-range">Ω (0 &lt; R<sub>L</sub> &lt;= 20000)</span>
+                  <label className={classes['row-heading']} for="ZLoad">Z-load:</label>
+                  <input className={classes['row-data']} id="ZLoad" value={Zload} onChange={(e) => setZload(e.target.value)}/>
+                  <span className={classes['row-units']}>  </span>
+                  <span className={classes['row-range']}>Ω (0 &lt; R<sub>L</sub> &lt;= 20000)</span>
                 </div>
             </div>
 
-            <div class="results-area">
-                <div class="output-summary">
+            <div className={classes['results-area']}>
+                <div className={classes['output-summary']}>
                     <h3>Outputs</h3>
                     <div class="">
-                      <span class="sum-heading">L1: </span>
-                      <span class="row-value">81.713 nH</span>
+                      <span className={classes['sum-heading']}>L1: </span>
+                      <span className={classes['row-value']}>{L1} nH</span>
                     </div>
                         <div class="">
-                      <span class="sum-heading">C1: </span>
-                      <span class="row-value">26.344 pF</span>
+                      <span className={classes['sum-heading']}>C1: </span>
+                      <span className={classes['row-value']}>{C1} pF</span>
                     </div>
                         <div class="">
-                      <span class="sum-heading">Z1: </span>
-                      <span class="row-value">70.67</span>
+                      <span className={classes['sum-heading']}>Z1: </span>
+                      <span className={classes['row-value']}>{Z1}</span>
                     </div>
                             <div class="">
-                      <span class="sum-heading">C2: </span>
-                      <span class="row-value">30.999 pF</span>
+                      <span className={classes['sum-heading']}>C2: </span>
+                      <span className={classes['row-value']}>{C2} pF</span>
                     </div>
                         <div class="">
-                      <span class="sum-heading">L2: </span>
-                      <span class="row-value">462.602 nH</span>
+                      <span className={classes['sum-heading']}>L2: </span>
+                      <span className={classes['row-value']}>{L2} nH</span>
                     </div>
+
+                    {invalidInput ?
+                    <ZinLessThanZload L1={L1} C1={C1} L2={L2} C2={C2} Z1={Z1} /> :
+                    <ZinMoreThanZload L1={L1} C1={C1} L2={L2} C2={C2} Z1={Z1} />
+                }
                 </div>
             </div>
-                <br />
-                {invalidInput ?
-                    <ZinLessThanZload L1={10} C1={10} L2={10} C2={10} Z1={10} /> :
-                    <ZinMoreThanZload L1={20} C1={20} L2={20} C2={20} Z1={10} />
-                }
+                
             </div>
         </>
     )
