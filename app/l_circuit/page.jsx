@@ -58,6 +58,7 @@ export default function LCircuit() {
         } else {
             var omega = 2 * Math.PI * freq * Math.pow(10, 6);
             var Qs = Math.sqrt((Zin - Zload)/Zload);
+            setZ1(Zload);
 
             //Cal L1
             var calL1 = Math.round(((Qs*Zload)/omega)*1e9*100)/100;
@@ -87,13 +88,13 @@ export default function LCircuit() {
     
     return (
         <>
-        <div style={{marginLeft: "4rem"}}>
+        <div style={{marginLeft: "6rem"}}>
             <h1>L-Circuit Network Matching</h1>
             <Links/>
             <div className={classes['user-input-area']}>
                 <h3>Parameters</h3>
                 <div class="">
-                  <label className={classes['row-heading']} for="Impedance">Z-in:</label>
+                  <label className={classes['row-heading']} for="Impedance">Z<sub>in</sub>:</label>
                   <input className={classes['row-data']} id="Impedance" value={Zin} onChange={(e) => setZin(e.target.value)}/>
                   <span className={classes['row-units']}> Ω </span>
                   <span className={classes['row-range']}>(0 &lt; Z<sub>o</sub> &lt;= 1000)</span>
@@ -105,10 +106,10 @@ export default function LCircuit() {
                   <span className={classes['row-range']}>(0 &lt; F<sub>o</sub> &lt;= 20000)</span>
                 </div>
                 <div class="">
-                  <label className={classes['row-heading']} for="ZLoad">Z-load:</label>
+                  <label className={classes['row-heading']} for="ZLoad">Z<sub>L</sub>:</label>
                   <input className={classes['row-data']} id="ZLoad" value={Zload} onChange={(e) => setZload(e.target.value)}/>
                   <span className={classes['row-units']}>  </span>
-                  <span className={classes['row-range']}>Ω (0 &lt; R<sub>L</sub> &lt;= 20000)</span>
+                  <span className={classes['row-range']}>Ω (0 &lt; Z<sub>L</sub> &lt;= 20000)</span>
                 </div>
             </div>
 
@@ -116,31 +117,32 @@ export default function LCircuit() {
                 <div className={classes['output-summary']}>
                     <h3>Outputs</h3>
                     <div class="">
-                      <span className={classes['sum-heading']}>L1: </span>
+                      <span className={classes['sum-heading']}>L<sub>1</sub>: </span>
                       <span className={classes['row-value']}>{L1} nH</span>
                     </div>
                         <div class="">
-                      <span className={classes['sum-heading']}>C1: </span>
+                      <span className={classes['sum-heading']}>C<sub>1</sub>: </span>
                       <span className={classes['row-value']}>{C1} pF</span>
                     </div>
                         <div class="">
-                      <span className={classes['sum-heading']}>Z1: </span>
-                      <span className={classes['row-value']}>{Z1}</span>
+                      <span className={classes['sum-heading']}>Z<sub>L</sub>: </span>
+                      <span className={classes['row-value']}>{Z1} Ω</span>
                     </div>
                             <div class="">
-                      <span className={classes['sum-heading']}>C2: </span>
+                      <span className={classes['sum-heading']}>C<sub>2</sub>: </span>
                       <span className={classes['row-value']}>{C2} pF</span>
                     </div>
                         <div class="">
-                      <span className={classes['sum-heading']}>L2: </span>
+                      <span className={classes['sum-heading']}>L<sub>2</sub>: </span>
                       <span className={classes['row-value']}>{L2} nH</span>
                     </div>
 
-                    {invalidInput ?
+                    
+                </div>
+                {invalidInput ?
                     <ZinLessThanZload L1={L1} C1={C1} L2={L2} C2={C2} Z1={Z1} /> :
                     <ZinMoreThanZload L1={L1} C1={C1} L2={L2} C2={C2} Z1={Z1} />
                 }
-                </div>
             </div>
                 
             </div>

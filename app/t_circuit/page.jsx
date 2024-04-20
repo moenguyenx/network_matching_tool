@@ -11,8 +11,8 @@ export default function PiCircuit() {
 
     return (
         <>
-        <div style={{marginLeft: "4rem"}}>
-            <h1>Pi-Circuit Network Matching</h1>
+        <div style={{marginLeft: "6rem"}}>
+            <h1>T-Circuit Network Matching</h1>
             <Links/>
 
             <div className={classes['user-input-area']}>
