@@ -4,7 +4,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "T-Circuit",
-  description: "Coded by Nguyen Quang Minh - 20214010",
+  description: process.env.NEXT_MAIN_AUTHOR,
 };
 
 export default function RootLayout({ children }) {
