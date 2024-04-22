@@ -97,7 +97,7 @@ export default function LCircuit() {
                   <label className={classes['row-heading']} for="Impedance">Z<sub>in</sub>:</label>
                   <input className={classes['row-data']} id="Impedance" value={Zin} onChange={(e) => setZin(e.target.value)}/>
                   <span className={classes['row-units']}> Ω </span>
-                  <span className={classes['row-range']}>(0 &lt; Z<sub>o</sub> &lt;= 1000)</span>
+                  <span className={classes['row-range']}>(0 &lt; Z<sub>o</sub> &lt; 100)</span>
                 </div>
                 <div class="">
                   <label className={classes['row-heading']} for="Frequency">Frequency:</label>
@@ -109,7 +109,7 @@ export default function LCircuit() {
                   <label className={classes['row-heading']} for="ZLoad">Z<sub>L</sub>:</label>
                   <input className={classes['row-data']} id="ZLoad" value={Zload} onChange={(e) => setZload(e.target.value)}/>
                   <span className={classes['row-units']}>  </span>
-                  <span className={classes['row-range']}>Ω (0 &lt; Z<sub>L</sub> &lt;= 20000)</span>
+                  <span className={classes['row-range']}>Ω (0 &lt; Z<sub>L</sub> &lt; 100)</span>
                 </div>
             </div>
 
