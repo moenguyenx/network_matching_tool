@@ -95,21 +95,42 @@ export default function LCircuit() {
                 <h3>Parameters</h3>
                 <div class="">
                   <label className={classes['row-heading']} for="Impedance">Z<sub>in</sub>:</label>
-                  <input className={classes['row-data']} id="Impedance" value={Zin} onChange={(e) => setZin(e.target.value)}/>
+                  <input className={classes['row-data']} id="Impedance" value={Zin} onChange={(e) => {
+                                                                                            const newValue = e.target.value;
+                                                                                            if (!isNaN(newValue) && newValue !== "") {
+                                                                                                setZin(parseFloat(newValue));
+                                                                                            } else {
+                                                                                                setZin(newValue);
+                                                                                            }
+                                                                                            }}/>
                   <span className={classes['row-units']}> Ω </span>
-                  <span className={classes['row-range']}>(0 &lt; Z<sub>o</sub> &lt; 100)</span>
+                  <span className={classes['row-range']}>(0 &lt; Z<sub>o</sub> &lt;= 10000)</span>
                 </div>
                 <div class="">
                   <label className={classes['row-heading']} for="Frequency">Frequency:</label>
-                  <input className={classes['row-data']} id="Frequency" value={freq} onChange={(e) => setFreq(e.target.value)}/>
+                  <input className={classes['row-data']} id="Frequency" value={freq} onChange={(e) => {
+                                                                                            const newValue = e.target.value;
+                                                                                            if (!isNaN(newValue) && newValue !== "") {
+                                                                                                setFreq(parseFloat(newValue));
+                                                                                            } else {
+                                                                                                setFreq(newValue);
+                                                                                            }
+                                                                                            }}/>
                   <span className={classes['row-units']}> MHz </span>
                   <span className={classes['row-range']}>(0 &lt; F<sub>o</sub> &lt;= 20000)</span>
                 </div>
                 <div class="">
                   <label className={classes['row-heading']} for="ZLoad">Z<sub>L</sub>:</label>
-                  <input className={classes['row-data']} id="ZLoad" value={Zload} onChange={(e) => setZload(e.target.value)}/>
+                  <input className={classes['row-data']} id="ZLoad" value={Zload} onChange={(e) => {
+                                                                                            const newValue = e.target.value;
+                                                                                            if (!isNaN(newValue) && newValue !== "") {
+                                                                                                setZload(parseFloat(newValue));
+                                                                                            } else {
+                                                                                                setZload(newValue);
+                                                                                            }
+                                                                                            }}/>
                   <span className={classes['row-units']}>  </span>
-                  <span className={classes['row-range']}>Ω (0 &lt; Z<sub>L</sub> &lt; 100)</span>
+                  <span className={classes['row-range']}>Ω (0 &lt; Z<sub>L</sub> &lt;= 10000)</span>
                 </div>
             </div>
 
